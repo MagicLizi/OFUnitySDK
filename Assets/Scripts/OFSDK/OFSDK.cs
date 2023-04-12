@@ -67,7 +67,13 @@ public class OFSDK
     public void ShowToast(string msg)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        _utilObj.Call("ShowToast", _androidContext, msg);
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            AndroidJavaClass Toast = new AndroidJavaClass("android.widget.Toast");
+            currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            {
+                Toast.CallStatic<AndroidJavaObject>("makeText", currentActivity, msg, Toast.GetStatic<int>("LENGTH_SHORT")).Call("show");
+            }));
 #elif UNITY_EDITOR
 
 #endif
