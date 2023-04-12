@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Main : MonoBehaviour
+public class Alert : MonoBehaviour
 {
-
-    public Text t;
-    AndroidJavaObject jo;
+    [SerializeField]
+    Text content;
 
     // Start is called before the first frame update
     void Start()
     {
-        OFSDK.GetInstance().InitSDK("", "");
-        OFSDK.GetInstance().LoginUI();
+        
     }
 
     // Update is called once per frame
@@ -22,8 +20,14 @@ public class Main : MonoBehaviour
         
     }
 
-    public void BtnClick() 
+    public void ShowMsg(string msg)
     {
+        gameObject.SetActive(true);
+        content.text = msg;
+    }
 
+    public void Confirm()
+    {
+        gameObject.SetActive(false);
     }
 }
