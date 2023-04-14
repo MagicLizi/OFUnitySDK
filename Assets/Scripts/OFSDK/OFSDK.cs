@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 
 public class OFSDK 
 {
@@ -24,9 +24,11 @@ public class OFSDK
 
     public OFSDK()
     {
+#if UNITY_ANDROID && !UNITY_EDITOR
         _apiMangerObj = new AndroidJavaObject("com.onefull.unitysdk.ApiManager");
         _utilObj = new AndroidJavaObject("com.onefull.unitysdk.Util");
         _androidContext = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+#endif
     }
 
     public void InitSDK(string appId, string appSecrect)
@@ -64,6 +66,15 @@ public class OFSDK
 #endif
     }
 
+    public void VerifyRealName(string idNo, string name, OFAndroidCallback callback)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        _apiMangerObj.Call("verifyRealName", name, idNo ,callback);
+#elif UNITY_EDITOR
+
+#endif
+    }
+
     public void ShowToast(string msg)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -77,5 +88,11 @@ public class OFSDK
 #elif UNITY_EDITOR
 
 #endif
+    }
+
+    public Action<bool, string> loginCallback;
+    public void SetLoginCallback(Action<bool, string> callback)
+    {
+        loginCallback = callback;
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +7,7 @@ public class OFCanvas : MonoBehaviour
     Login login;
 
     [SerializeField]
-    RNVer rnver;
+    public RNVer rnver;
 
     [SerializeField]
     Alert alert;

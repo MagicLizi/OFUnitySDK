@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
+using LitJson;
+using System;
 
 public class Login : MonoBehaviour
 {
@@ -23,6 +23,9 @@ public class Login : MonoBehaviour
 
     [SerializeField]
     Text CodeBtnTxt;
+
+    [SerializeField]
+    OFCanvas ofCanvas;
 
     int curCoolDown = 60;
 
@@ -54,7 +57,7 @@ public class Login : MonoBehaviour
     void StartSmsCoolDown()
     {
         CancelInvoke("CoolDown");
-        InvokeRepeating("CoolDown", 1.0f, 1.0f);
+        InvokeRepeating("CoolDown", 0, 1.0f);
     }
 
     void CoolDown()
@@ -63,7 +66,7 @@ public class Login : MonoBehaviour
         curCoolDown--;
         if (curCoolDown == 0)
         {
-            CodeBtnTxt.text = "·¢ËÍ";
+            CodeBtnTxt.text = "ç™»å½•";
             CancelInvoke("CoolDown");
         }
     }
@@ -75,7 +78,7 @@ public class Login : MonoBehaviour
         {
             OFAndroidCallback callback = new OFAndroidCallback();
             callback.SetCallback((data) => {
-                OFSDK.GetInstance().ShowToast("·¢ËÍÑéÖ¤Âë³É¹¦£¡");
+                OFSDK.GetInstance().ShowToast("è·å–éªŒè¯ç æˆåŠŸï¼");
                 StartSmsCoolDown();
             },
             (code, msg) => {
@@ -85,7 +88,7 @@ public class Login : MonoBehaviour
         }
         else
         {
-            OFSDK.GetInstance().ShowToast("ÇëÊäÈëÕıÈ·µÄÊÖ»úºÅÂë£¡");
+            OFSDK.GetInstance().ShowToast("è¯·è¾“å…¥æ­£ç¡®çš„æ‰‹æœºå·ç ï¼");
         }
     }
 
@@ -96,16 +99,34 @@ public class Login : MonoBehaviour
         {
             OFAndroidCallback callback = new OFAndroidCallback();
             callback.SetCallback((data) => {
-                OFSDK.GetInstance().ShowToast("µÇÂ¼³É¹¦£¡");
+                OFSDK.GetInstance().ShowToast("ç™»å½•æˆåŠŸï¼");
+                if (OFSDK.GetInstance().loginCallback != null)
+                {
+                    JsonData jd = JsonMapper.ToObject(data);
+                    OFSDK.GetInstance().loginCallback(true, jd["access_token"].ToString());
+                }
+                CancelInvoke("CoolDown");
+                Destroy(ofCanvas.gameObject);
             },
             (code, msg) => {
                 errorText.text = msg;
+                if (code == 1004)
+                {
+                    ofCanvas.rnver.gameObject.SetActive(true);
+                }
+                else
+                {
+                    if (OFSDK.GetInstance().loginCallback != null)
+                    {
+                        OFSDK.GetInstance().loginCallback(false, "");
+                    }
+                }
             });
             OFSDK.GetInstance().Login(MobileTxt.text, CodeTxt.text, callback);
         }
         else
         {
-            OFSDK.GetInstance().ShowToast("ÇëÊäÈëÕıÈ·µÄÊÖ»úºÅÂëºÍÑéÖ¤Âë£¡");
+            OFSDK.GetInstance().ShowToast("è¯·è¾“å…¥æ­£ç¡®çš„æ‰‹æœºå·ç å’ŒéªŒè¯ç ï¼");
         }
     }
 }

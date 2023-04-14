@@ -967,7 +967,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.2
-  m_Text: "\u6839\u636E\u56FD\u5BB6\u65B0\u95FB\u51FA\u7248\u793E\u300A\u5173\u4E8E\u9632\u6B62\u672A\u6210\u5E74\u4EBA\u6C89\u8FF7\u7F51\u7EDC\u6E38\u620F\u7684\u901A\u77E5\u300B\uFF0C\u7F51\u53CB\u6E38\u620F\u7528\u6237\u5FC5\u987B\u4F7F\u7528\u6709\u6548\u8EAB\u4EFD\u4FE1\u606F\u767B\u8BB0\uFF0C"
+  m_Text: "\u6839\u636E\u56FD\u5BB6\u65B0\u95FB\u51FA\u7248\u793E\u300A\u5173\u4E8E\u9632\u6B62\u672A\u6210\u5E74\u4EBA\u6C89\u8FF7\u7F51\u7EDC\u6E38\u620F\u7684\u901A\u77E5\u300B\uFF0C\u7F51\u53CB\u6E38\u620F\u7528\u6237\u5FC5\u987B\u4F7F\u7528\u6709\u6548\u8EAB\u4EFD\u4FE1\u606F\u767B\u8BB0"
 --- !u!1 &6430446781814280204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,6 +1475,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d5fd3ed1855b242abb8e0ee415d713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IdNoInput: {fileID: 6430446781543083981}
+  NameInput: {fileID: 6430446782746619729}
+  ofCanvas: {fileID: 6430446782955597198}
 --- !u!1 &6430446782131763893
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,7 +2272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6430446782659522224
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2656,7 +2659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6430446782825601732
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3020,6 +3023,7 @@ MonoBehaviour:
   alert: {fileID: 1505079913}
   errorText: {fileID: 6430446782825601731}
   CodeBtnTxt: {fileID: 6430446782750049181}
+  ofCanvas: {fileID: 6430446782955597198}
 --- !u!1 &6430446783047025501
 GameObject:
   m_ObjectHideFlags: 0
@@ -3275,4 +3279,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6430446783114768457}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 437152620}
+        m_TargetAssemblyTypeName: RNVer, Assembly-CSharp
+        m_MethodName: Confirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

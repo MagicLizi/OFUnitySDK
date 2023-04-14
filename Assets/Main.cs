@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +11,12 @@ public class Main : MonoBehaviour
     void Start()
     {
         OFSDK.GetInstance().InitSDK("", "");
+        OFSDK.GetInstance().SetLoginCallback((success, accessToken) =>
+        {
+            if (success) {
+                Debug.Log("登录成功：" + accessToken);
+            }
+        });
         OFSDK.GetInstance().LoginUI();
     }
 
