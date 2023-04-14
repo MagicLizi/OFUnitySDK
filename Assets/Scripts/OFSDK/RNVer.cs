@@ -14,6 +14,13 @@ public class RNVer : MonoBehaviour
     [SerializeField]
     OFCanvas ofCanvas;
 
+    RectTransform rt;
+
+    private void Awake()
+    {
+        rt = GetComponent<RectTransform>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +30,23 @@ public class RNVer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (IdNoInput.isFocused)
+        {
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, 200);
+        }
+
+        if (NameInput.isFocused)
+        {
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, 250);
+        }
+
+        if (!IdNoInput.isFocused && !NameInput.isFocused)
+        {
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, 0);
+        }
     }
 
+    public Action<bool, string> loginCallback;
     public void Confirm()
     {
         if (TestCardId(IdNoInput.text) && NameInput.text.Length > 0)
@@ -33,18 +54,19 @@ public class RNVer : MonoBehaviour
             OFAndroidCallback callback = new OFAndroidCallback();
             callback.SetCallback((data) => {
                 OFSDK.GetInstance().ShowToast("实名验证成功！");
-                if (OFSDK.GetInstance().loginCallback != null)
+                if (loginCallback != null)
                 {
                     JsonData jd = JsonMapper.ToObject(data);
-                    OFSDK.GetInstance().loginCallback(true, jd["access_token"].ToString());
+                    loginCallback(true, jd["access_token"].ToString());
                 }
-                Destroy(ofCanvas.gameObject);
+                gameObject.SetActive(false);
+                ofCanvas.gameObject.SetActive(false);
             },
             (code, msg) => {
                 OFSDK.GetInstance().ShowToast(msg);
-                if (OFSDK.GetInstance().loginCallback != null)
+                if (loginCallback != null)
                 {
-                    OFSDK.GetInstance().loginCallback(false, "");
+                    loginCallback(false, "");
                 }
             });
             OFSDK.GetInstance().VerifyRealName(IdNoInput.text, NameInput.text, callback);

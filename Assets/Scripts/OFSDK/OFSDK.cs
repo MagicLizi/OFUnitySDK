@@ -11,7 +11,11 @@ public class OFSDK
 
     AndroidJavaObject _androidContext;
 
+    AndroidJavaObject _currentActivity;
+
     OFCanvas _ofCanvas;
+
+    OFSDKManager _manager;
 
     public static OFSDK GetInstance()
     {
@@ -28,24 +32,30 @@ public class OFSDK
         _apiMangerObj = new AndroidJavaObject("com.onefull.unitysdk.ApiManager");
         _utilObj = new AndroidJavaObject("com.onefull.unitysdk.Util");
         _androidContext = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        _currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 #endif
     }
 
     public void InitSDK(string appId, string appSecrect)
     {
+        GameObject OFSDKManager = GameObject.Instantiate(Resources.Load("OFSDK/OFSDKManager")) as GameObject;
+        OFSDKManager.name = "OFSDK";
+        GameObject.DontDestroyOnLoad(OFSDKManager);
+        _manager = OFSDKManager.GetComponent<OFSDKManager>();
+        _ofCanvas = _manager.canvas;
+
 #if UNITY_ANDROID && !UNITY_EDITOR
-        _apiMangerObj.Call("init", appId, appSecrect, 1, _androidContext);
+        _apiMangerObj.Call("init", appId, appSecrect, 1, _androidContext, _currentActivity);
 #elif UNITY_EDITOR
 
 #endif
     }
 
-    public void LoginUI()
+    public void LoginUI(Action<bool, string> lcb = null)
     {
-        GameObject canvasObj = GameObject.Instantiate(Resources.Load("OFSDK/OFCanvas")) as GameObject;
-        _ofCanvas = canvasObj.GetComponent<OFCanvas>();
-        _ofCanvas.name = "OFSDK";
-        _ofCanvas.StartLogin();
+        _manager.canvas.gameObject.SetActive(true);
+        _ofCanvas.StartLogin(lcb);
     }
 
     public void GetSms(string mobile, OFAndroidCallback callback)
@@ -75,24 +85,59 @@ public class OFSDK
 #endif
     }
 
+
+    public void Logout(OFAndroidCallback callback)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        _apiMangerObj.Call("logout" ,callback);
+#elif UNITY_EDITOR
+
+#endif
+    }
+
+    public void IsRealName(Action<bool> real)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        OFAndroidCallback callback = new OFAndroidCallback();
+        callback.SetCallback(
+                    (data)=> { 
+                        real.Invoke(true);
+                    }, 
+                    (code , msg)=> { 
+                        real.Invoke(false);
+                    });
+        _apiMangerObj.Call("isRealName" ,callback);
+#elif UNITY_EDITOR
+
+#endif
+    }
+
     public void ShowToast(string msg)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
             AndroidJavaClass Toast = new AndroidJavaClass("android.widget.Toast");
-            currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            _currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
             {
-                Toast.CallStatic<AndroidJavaObject>("makeText", currentActivity, msg, Toast.GetStatic<int>("LENGTH_SHORT")).Call("show");
+                Toast.CallStatic<AndroidJavaObject>("makeText", _currentActivity, msg, Toast.GetStatic<int>("LENGTH_SHORT")).Call("show");
             }));
 #elif UNITY_EDITOR
 
 #endif
     }
 
-    public Action<bool, string> loginCallback;
-    public void SetLoginCallback(Action<bool, string> callback)
+    public void Pay(string pid)
     {
-        loginCallback = callback;
+#if UNITY_ANDROID && !UNITY_EDITOR
+        OFAndroidCallback callback = new OFAndroidCallback();
+        callback.SetCallback((data)=> { 
+
+        }, 
+        (code , msg)=> { 
+
+        });
+        _apiMangerObj.Call("pay", pid ,callback);
+#elif UNITY_EDITOR
+
+#endif
     }
 }

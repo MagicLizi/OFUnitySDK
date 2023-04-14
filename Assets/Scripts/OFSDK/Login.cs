@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using LitJson;
 using System;
+using System.Threading;
+using Unity.VisualScripting;
 
 public class Login : MonoBehaviour
 {
@@ -29,12 +31,15 @@ public class Login : MonoBehaviour
 
     int curCoolDown = 60;
 
+    RectTransform rt;
+
     private void Awake()
     {
         MobileTxt.contentType = InputField.ContentType.IntegerNumber;
         MobileTxt.characterLimit = 11;
         CodeTxt.contentType = InputField.ContentType.IntegerNumber;
         CodeTxt.characterLimit = 4;
+        rt = GetComponent<RectTransform>();
     }
 
     // Start is called before the first frame update
@@ -46,7 +51,20 @@ public class Login : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (MobileTxt.isFocused)
+        {
+           rt.anchoredPosition = new Vector2 (rt.anchoredPosition.x, 200);
+        }
+
+        if (CodeTxt.isFocused)
+        {
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, 250);
+        }
+
+        if (!MobileTxt.isFocused && !CodeTxt.isFocused)
+        {
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, 0);
+        }
     }
 
     public static bool IsPhoneNumber(string phoneNumber)
@@ -92,41 +110,54 @@ public class Login : MonoBehaviour
         }
     }
 
+    public Action<bool, string> loginCallback;
+
     public void TryLogin()
     {
         errorText.text = string.Empty;
-        if (IsPhoneNumber(MobileTxt.text) && CodeTxt.text.Length > 0)
+        if (Tog.isOn)
         {
-            OFAndroidCallback callback = new OFAndroidCallback();
-            callback.SetCallback((data) => {
-                OFSDK.GetInstance().ShowToast("登录成功！");
-                if (OFSDK.GetInstance().loginCallback != null)
+            if (IsPhoneNumber(MobileTxt.text) && CodeTxt.text.Length > 0)
+            {
+                OFAndroidCallback callback = new OFAndroidCallback();
+                callback.SetCallback((data) =>
                 {
-                    JsonData jd = JsonMapper.ToObject(data);
-                    OFSDK.GetInstance().loginCallback(true, jd["access_token"].ToString());
-                }
-                CancelInvoke("CoolDown");
-                Destroy(ofCanvas.gameObject);
-            },
-            (code, msg) => {
-                errorText.text = msg;
-                if (code == 1004)
-                {
-                    ofCanvas.rnver.gameObject.SetActive(true);
-                }
-                else
-                {
-                    if (OFSDK.GetInstance().loginCallback != null)
+                    OFSDK.GetInstance().ShowToast("登录成功！");
+                    CancelInvoke("CoolDown");
+                    if (loginCallback != null)
                     {
-                        OFSDK.GetInstance().loginCallback(false, "");
+                        JsonData jd = JsonMapper.ToObject(data);
+                        loginCallback(true, jd["access_token"].ToString());
                     }
-                }
-            });
-            OFSDK.GetInstance().Login(MobileTxt.text, CodeTxt.text, callback);
+                    ofCanvas.gameObject.SetActive(false);
+                },
+                (code, msg) =>
+                {
+                    errorText.text = msg;
+                    if (code == 1004)
+                    {
+                        ofCanvas.rnver.loginCallback = loginCallback;
+                        ofCanvas.rnver.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        if (loginCallback != null)
+                        {
+                            loginCallback(false, "");
+                        }
+                    }
+                });
+                OFSDK.GetInstance().Login(MobileTxt.text, CodeTxt.text, callback);
+            }
+            else
+            {
+                OFSDK.GetInstance().ShowToast("请输入正确的手机号码和验证码！");
+            }
         }
         else
         {
-            OFSDK.GetInstance().ShowToast("请输入正确的手机号码和验证码！");
+            OFSDK.GetInstance().ShowToast("请勾选条款！");
         }
+        
     }
 }

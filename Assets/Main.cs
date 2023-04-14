@@ -11,13 +11,17 @@ public class Main : MonoBehaviour
     void Start()
     {
         OFSDK.GetInstance().InitSDK("", "");
-        OFSDK.GetInstance().SetLoginCallback((success, accessToken) =>
+        OFSDK.GetInstance().LoginUI((success, accessToken) =>
         {
-            if (success) {
+            if (success)
+            {
                 Debug.Log("登录成功：" + accessToken);
+                OFSDK.GetInstance().IsRealName((isR) =>
+                {
+                    Debug.Log($"实名结果：{isR}");
+                });
             }
         });
-        OFSDK.GetInstance().LoginUI();
     }
 
     // Update is called once per frame

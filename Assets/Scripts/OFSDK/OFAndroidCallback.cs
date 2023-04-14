@@ -21,7 +21,16 @@ public class OFAndroidCallback : AndroidJavaProxy
 
     public void SetCallback(Action<String> successCallback, Action<int,String> failedCallback)
     {
-        sCallback = successCallback;
-        fCallback = failedCallback;
+        sCallback = (dataStr) => {
+            OFLoom.QueueOnMainThread((param)=> {
+                successCallback.Invoke(dataStr);
+            });
+        };
+        fCallback = (code, msg) => {
+            OFLoom.QueueOnMainThread((param) =>
+            {
+                failedCallback.Invoke(code, msg);
+            });
+        };
     }
 }

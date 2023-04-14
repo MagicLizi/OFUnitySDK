@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -56,8 +57,9 @@ public class OFCanvas : MonoBehaviour
         RefreshOrientation();
     }
 
-    public void StartLogin()
+    public void StartLogin(Action<bool, string> loginCallback = null)
     {
+        login.loginCallback = loginCallback;
         login.gameObject.SetActive(true);
     }
 
