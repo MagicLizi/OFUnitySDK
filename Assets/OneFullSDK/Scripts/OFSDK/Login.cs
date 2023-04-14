@@ -136,6 +136,7 @@ public class Login : MonoBehaviour
                     errorText.text = msg;
                     if (code == 1004)
                     {
+                        ofCanvas.login.gameObject.SetActive(false);
                         ofCanvas.rnver.loginCallback = loginCallback;
                         ofCanvas.rnver.gameObject.SetActive(true);
                     }
