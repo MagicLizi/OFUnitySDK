@@ -7,7 +7,9 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //初始化
         OFSDK.GetInstance().InitSDK("", "");
+        //调用登录
         OFSDK.GetInstance().LoginUI((success, accessToken) =>
         {
             if (success)
@@ -29,6 +31,7 @@ public class Test : MonoBehaviour
 
     public void Pay()
     {
+        //支付
         OFSDK.GetInstance().Pay("1");
     }
 }
