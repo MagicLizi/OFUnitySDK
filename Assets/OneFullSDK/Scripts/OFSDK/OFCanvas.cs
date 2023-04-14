@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class OFCanvas : MonoBehaviour
 {
     [SerializeField]
-    Login login;
+    public Login login;
 
     [SerializeField]
     public RNVer rnver;

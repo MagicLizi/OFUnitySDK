@@ -59,7 +59,7 @@ public class RNVer : MonoBehaviour
                     JsonData jd = JsonMapper.ToObject(data);
                     loginCallback(true, jd["access_token"].ToString());
                 }
-                gameObject.SetActive(false);
+                ofCanvas.login.gameObject.SetActive(false);
                 ofCanvas.gameObject.SetActive(false);
             },
             (code, msg) => {
