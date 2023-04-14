@@ -1,12 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Main : MonoBehaviour
+public class Test : MonoBehaviour
 {
-
-    public Text t;
-    AndroidJavaObject jo;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +27,8 @@ public class Main : MonoBehaviour
         
     }
 
-    public void BtnClick() 
+    public void Pay()
     {
-
+        OFSDK.GetInstance().Pay("1");
     }
 }
