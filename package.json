@@ -2,7 +2,7 @@
     "name": "com.onefull.sdk",
     "displayName": "OFSDK",
     "description": "OFSDK",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "license": "MIT",
     "dependencies": {
      }
