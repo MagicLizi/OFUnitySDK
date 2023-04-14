@@ -1,0 +1,10 @@
+{
+    "name": "Undefined.Onefullsdk1.Editor",
+    "references": [
+      "Undefined.Onefullsdk1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

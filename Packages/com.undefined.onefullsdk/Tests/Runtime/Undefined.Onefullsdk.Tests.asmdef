@@ -1,0 +1,11 @@
+{
+    "name": "Undefined.Onefullsdk.Tests",
+    "references": [
+        "Undefined.Onefullsdk"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

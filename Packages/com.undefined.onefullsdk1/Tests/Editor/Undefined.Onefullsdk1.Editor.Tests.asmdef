@@ -1,0 +1,14 @@
+{
+    "name": "Undefined.Onefullsdk1.Editor.Tests",
+    "references": [
+        "Undefined.Onefullsdk1.Editor",
+        "Undefined.Onefullsdk1"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}
