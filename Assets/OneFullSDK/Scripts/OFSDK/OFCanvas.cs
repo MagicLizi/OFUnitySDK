@@ -63,8 +63,8 @@ public class OFCanvas : MonoBehaviour
         login.gameObject.SetActive(true);
     }
 
-    public void ShowNotice(string notice)
+    public void ShowNotice(string notice, Action callback = null)
     {
-        alert.ShowMsg(notice);
+        alert.ShowMsg(notice, callback);
     }
 }

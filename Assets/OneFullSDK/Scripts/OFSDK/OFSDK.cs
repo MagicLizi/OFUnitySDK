@@ -125,7 +125,7 @@ public class OFSDK
 #endif
     }
 
-    public void Pay(string pid)
+    public void Pay(string pid, int type)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         OFAndroidCallback callback = new OFAndroidCallback();
@@ -135,7 +135,16 @@ public class OFSDK
         (code , msg)=> { 
 
         });
-        _apiMangerObj.Call("pay", pid ,callback);
+        _apiMangerObj.Call("pay", pid, type ,callback);
+#elif UNITY_EDITOR
+
+#endif
+    }
+
+    public void ChackCanPlay(OFAndroidCallback callback)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        _apiMangerObj.Call("checkCanPlay" ,callback);
 #elif UNITY_EDITOR
 
 #endif

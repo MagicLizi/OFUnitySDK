@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using LitJson;
 using System;
-using System.Threading;
-using Unity.VisualScripting;
 
 public class Login : MonoBehaviour
 {

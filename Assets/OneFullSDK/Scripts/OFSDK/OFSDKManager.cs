@@ -9,12 +9,38 @@ public class OFSDKManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        InvokeRepeating("CheckCanPlay", 0, 10f);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnDestroy()
+    {
+        CancelInvoke("CheckCanPlay");
+    }
+
+    void CheckCanPlay()
+    {
+        OFAndroidCallback callback = new OFAndroidCallback();
+        callback.SetCallback((data) => {
+            
+        },
+        (code, msg) => {
+            if (code == 1013)
+            {
+                OFLoom.QueueOnMainThread((p) =>
+                {
+                    canvas.ShowNotice("未成年游戏时间限制", () =>
+                    {
+                        Application.Quit();
+                    });
+                });
+            }
+        });
+        OFSDK.GetInstance().ChackCanPlay(callback);
     }
 }

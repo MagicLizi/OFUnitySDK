@@ -29,9 +29,14 @@ public class Test : MonoBehaviour
         
     }
 
-    public void Pay()
+    public void AliPay()
     {
         //支付
-        OFSDK.GetInstance().Pay("1");
+        OFSDK.GetInstance().Pay("1", 1);
+    }
+
+    public void WeChatPay()
+    {
+        OFSDK.GetInstance().Pay("1", 2);
     }
 }
