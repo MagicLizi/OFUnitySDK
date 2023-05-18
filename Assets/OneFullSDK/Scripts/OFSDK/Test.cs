@@ -33,7 +33,7 @@ public class Test : MonoBehaviour
     public void AliPay()
     {
         JsonData data = new JsonData();
-        data["test"] = "1";
+        data["extra"] = "AliPay";
         //支付
         OFSDK.GetInstance().Pay("1", 1, data.ToJson());
     }
@@ -41,7 +41,7 @@ public class Test : MonoBehaviour
     public void WeChatPay()
     {
         JsonData data = new JsonData();
-        data["extra"] = "2";
+        data["extra"] = "WeChatPay";
         OFSDK.GetInstance().Pay("1", 2, data.ToJson());
     }
 }
