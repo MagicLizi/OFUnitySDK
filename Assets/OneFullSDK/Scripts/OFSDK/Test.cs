@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LitJson;
 
 public class Test : MonoBehaviour
 {
@@ -31,12 +32,16 @@ public class Test : MonoBehaviour
 
     public void AliPay()
     {
+        JsonData data = new JsonData();
+        data["test"] = "1";
         //支付
-        OFSDK.GetInstance().Pay("1", 1);
+        OFSDK.GetInstance().Pay("1", 1, data.ToJson());
     }
 
     public void WeChatPay()
     {
-        OFSDK.GetInstance().Pay("1", 2);
+        JsonData data = new JsonData();
+        data["extra"] = "2";
+        OFSDK.GetInstance().Pay("1", 2, data.ToJson());
     }
 }

@@ -37,7 +37,7 @@ public class OFSDK
 #endif
     }
 
-    public void InitSDK(string appId, string appSecrect)
+    public void InitSDK(string appId)
     {
         GameObject OFSDKManager = GameObject.Instantiate(Resources.Load("OFSDK/OFSDKManager")) as GameObject;
         OFSDKManager.name = "OFSDK";
@@ -46,7 +46,7 @@ public class OFSDK
         _ofCanvas = _manager.canvas;
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-        _apiMangerObj.Call("init", appId, appSecrect, 1, _androidContext, _currentActivity);
+        _apiMangerObj.Call("init", appId, 1, _androidContext, _currentActivity);
 #elif UNITY_EDITOR
 
 #endif
@@ -125,7 +125,7 @@ public class OFSDK
 #endif
     }
 
-    public void Pay(string pid, int type)
+    public void Pay(string pid, int type, string extra_info = "")
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         OFAndroidCallback callback = new OFAndroidCallback();
@@ -135,7 +135,7 @@ public class OFSDK
         (code , msg)=> { 
 
         });
-        _apiMangerObj.Call("pay", pid, type ,callback);
+        _apiMangerObj.Call("pay", pid, type, extra_info ,callback);
 #elif UNITY_EDITOR
 
 #endif
